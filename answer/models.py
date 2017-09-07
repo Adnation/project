@@ -5,6 +5,8 @@ from question.models import Question
 
 # Create your models here.
 class Answer(models.Model):
+
+	# Memeber variables
     column_body = models.CharField(max_length=2000, blank=False, unique=False)
     question = models.ForeignKey(Question)
     user = models.ForeignKey(User)

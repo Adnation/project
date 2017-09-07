@@ -6,9 +6,9 @@ from django.http import HttpResponse
 
 # API usage middlware
 class ApiUsageMiddlware(object):
+    
     def __init__(self, get_response):
         self.get_response = get_response
-        # One-time configuration and initialization.
 
     # Method to handle usage limit of api ket
     def is_limit_exceeded(self, tenant):
@@ -20,8 +20,8 @@ class ApiUsageMiddlware(object):
 
     def __call__(self, request):
         
-        # Pass middleware for admin requests
-        if request.path.startswith('/admin/'):
+        # Bypass middleware for admin requests
+        if request.path.startswith('/admin/') or request.path == '/' :
             response = self.get_response(request)
             return response
         
@@ -51,9 +51,8 @@ class ApiUsageMiddlware(object):
         if limit_flag:
             return HttpResponse(json.dumps({'error': 'Too many requests'}), status=429)
 
+        # Execute request
         response = self.get_response(request)
 
         # Return response
         return response
-
-    
