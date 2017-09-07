@@ -6,7 +6,8 @@ class Tenant(models.Model):
     name = models.CharField(max_length=1000, blank=False, unique=False)
     api_key = models.CharField(max_length=32, blank=False, unique=True)
     last_request_ts = models.DateTimeField()
-    daily_request_counter = models.IntegerField()
+    daily_request_counter = models.IntegerField(default=0)
+    total_request_counter = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         self.api_key = self.api_key.lower().replace(' ', '')
