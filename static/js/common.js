@@ -4,7 +4,6 @@ function set_values() {
         type: 'GET',
         dataType:'json',
         success: function(response) {
-            console.log(response);
 
             dashboardData = response['dashboard_data']
             counters = {
