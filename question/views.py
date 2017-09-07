@@ -1,6 +1,8 @@
 import json
 from .models import Question
+from user.models import User
 from answer.models import Answer
+from tenant.models import Tenant
 from django.shortcuts import render
 from django.http import HttpResponse
 from .serializers import QustionSerializer
@@ -65,11 +67,28 @@ def render_index_html(request):
 # Method to preapre dashboard data
 def preapre_dashboard_data(request):
     
+    today_top_tenants = list(Tenant.objects.all().order_by("-daily_request_counter")[0:6])
+    overall_top_tenants = list(Tenant.objects.all().order_by("-total_request_counter")[0:6])
+
+    opt_today_top_tenants = []
+    opt_overall_top_tenants = []
+
+    for tenant in today_top_tenants:
+        opt_today_top_tenants.append({'api_key': tenant.api_key, 'counter': tenant.daily_request_counter})
+
+    for tenant in overall_top_tenants:
+        opt_overall_top_tenants.append({'api_key': tenant.api_key, 'counter': tenant.total_request_counter})
+
     # prepare data
     response = {
-        'questions_total': Question.objects.all().count(),
-        'answer_total': Answer.objects.all().count(),
-        'user_total': User.objects.all().count()
+        'total_questions': Question.objects.all().count(),
+        'total_public_questions': Question.objects.filter(is_private=False).count(),
+        'total_private_questions': Question.objects.filter(is_private=True).count(),
+        'total_answers': Answer.objects.all().count(),
+        'total_users': User.objects.all().count(),
+        'total_tenants': Tenant.objects.all().count(),
+        'today_consumers': opt_today_top_tenants,
+        'overall_consumers': opt_overall_top_tenants
     }
 
     # Return data

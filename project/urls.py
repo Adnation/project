@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^question/get-answer/(?P<question_column>[a-zA-Z\w|\W]+)/$', get_question_answer, name='get_question_answer'),
     url(r'^question/search/(?P<search_term>[a-zA-Z\w|\W]+)/$', search_questions, name='search_question'),
-    url(r'^$', render_index_html, name='home_page')
+    url(r'^get-dashboard-data/$', preapre_dashboard_data, name='prepare_dashboard_data'),
+    url(r'^$', render_index_html, name='home_page'),
 ]

@@ -21,7 +21,7 @@ class ApiUsageMiddlware(object):
     def __call__(self, request):
         
         # Bypass middleware for admin requests
-        if request.path.startswith('/admin/') or request.path == '/' :
+        if request.path.startswith('/admin/') or request.path in ['/', '/get-dashboard-data/']:
             response = self.get_response(request)
             return response
         
